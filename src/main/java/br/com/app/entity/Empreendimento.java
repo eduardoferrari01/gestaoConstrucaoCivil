@@ -18,8 +18,10 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 
 import br.com.app.enuns.StatusEmpreendimento;
+import br.com.app.pojo.MensagemException;
 import lombok.Data;
 
 @Entity
@@ -64,12 +66,32 @@ public class Empreendimento implements Serializable{
     @OneToOne
     private Empreendimento matriz;
     
-    
     public boolean isMatriz() {
     	return matriz == null;
     	
     }
     
- 
+    public Empreendimento() {
+	}    
+
+	public Empreendimento(Long id, Endereco endereco, String descricao, String telefone, Double valorMaximoGastar,
+			Double valoresGastos, Double porcentagem, Date dataAbertura, Date datafechamento,
+			StatusEmpreendimento status, Empreendimento matriz) {
+		super();
+		this.id = id;
+		this.endereco = endereco;
+		this.descricao = descricao;
+		this.telefone = telefone;
+		this.valorMaximoGastar = valorMaximoGastar;
+		this.valoresGastos = valoresGastos;
+		this.porcentagem = porcentagem;
+		this.dataAbertura = dataAbertura;
+		this.datafechamento = datafechamento;
+		this.status = status;
+		this.matriz = matriz;
+	}
+
 	
+    
+    
 }

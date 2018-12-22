@@ -14,14 +14,12 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.querydsl.core.types.dsl.BooleanExpression;
 
+import br.com.app.entity.Usuario;
 import br.com.app.entity.almoxarifado.Cotacao;
-import br.com.app.entity.almoxarifado.CotacaoItem;
 import br.com.app.entity.almoxarifado.QCotacao;
-import br.com.app.entity.almoxarifado.QCotacaoItem;
 import br.com.app.enuns.StatusCotacao;
 import br.com.app.exceptions.NotFoundException;
 import br.com.app.pojo.SessionUsuario;
-import br.com.app.repository.almoxarifado.CotacaoItemRepository;
 import br.com.app.repository.almoxarifado.CotacaoRepository;
 import br.com.app.repository.filter.CotacaoFilter;
 
@@ -31,8 +29,6 @@ public class CotacaoService {
 
 	@Autowired
 	private CotacaoRepository cotacaoRepository;
-	@Autowired
-	private CotacaoItemRepository cotacaoItemRepository;
 	@Autowired
 	private VerificaItensGanhadores verificarItens;
 
@@ -69,7 +65,7 @@ public class CotacaoService {
 		}		
 		BooleanExpression addGeral = geral.get(0);
 		for(BooleanExpression X : geral) {
-			addGeral.and(X);
+			addGeral = addGeral.and(X);
 		}		
 		return cotacaoRepository.findAll(addGeral, page);
 	}
@@ -81,7 +77,7 @@ public class CotacaoService {
 		}		
 		BooleanExpression addGeral = geral.get(0);
 		for(BooleanExpression X : geral) {
-			addGeral.and(X);
+			addGeral = addGeral.and(X);
 		}		
 		return cotacaoRepository.findAll(addGeral);
 	}
@@ -89,7 +85,12 @@ public class CotacaoService {
 	public List<BooleanExpression> filtros(CotacaoFilter filter){
 		QCotacao qCotacao = QCotacao.cotacao;
 		
+		Usuario user = SessionUsuario.getInstance().getUsuario();
+		
 		List<BooleanExpression> geral = new ArrayList<>();
+		
+		BooleanExpression empreendimentoEquals = qCotacao.empreendimento.eq(user.getEmpreendimento());
+		geral.add(empreendimentoEquals);
 		
 		if(filter.getDataCadastroDe() != null && filter.getDataCadastroAte() != null) {
 			BooleanExpression dataCriacaoEquals = qCotacao.dataCriacao.between(filter.getDataCadastroDe(), filter.getDataCadastroAte());
@@ -103,15 +104,9 @@ public class CotacaoService {
 			BooleanExpression dataLimiteEquals = qCotacao.dataLimite.between(filter.getDataLimiteDe(), filter.getDataLimiteAte());
 			geral.add(dataLimiteEquals);
 		}
-		if(filter.getDescricaoItem() != null) {
-			QCotacaoItem qCotacaoItem = QCotacaoItem.cotacaoItem;
-			BooleanExpression itensEquals = qCotacaoItem.descricao.containsIgnoreCase(filter.getDescricaoItem());
-			List<CotacaoItem> itens = (List<CotacaoItem>) cotacaoItemRepository.findAll(itensEquals);
-			
-			itens.forEach(item ->{
-				BooleanExpression cotacaoEquals = qCotacao.itens.contains(item);
-				geral.add(cotacaoEquals);
-			});			
+		if(filter.getDescricaoItem() != null) {		
+				BooleanExpression cotacaoEquals = qCotacao.itens.any().descricao.containsIgnoreCase(filter.getDescricaoItem());
+				geral.add(cotacaoEquals);	
 		}
 		if(filter.getStatus() != null) {
 			BooleanExpression statusEquals = qCotacao.statusCotacao.eq(filter.getStatus());

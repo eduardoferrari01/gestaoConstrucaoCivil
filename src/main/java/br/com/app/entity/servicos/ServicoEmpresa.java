@@ -1,8 +1,11 @@
 package br.com.app.entity.servicos;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -16,9 +19,10 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import br.com.app.entity.Empreendimento;
-import br.com.app.entity.Usuario;
+import br.com.app.entity.Estrutura;
 import lombok.Data;
 
 @Data
@@ -38,7 +42,8 @@ public class ServicoEmpresa implements Serializable{
 	@JoinColumn(name = "id_prestadora_servico", nullable = false)
 	private PrestadoraServico prestadoraServico;
 
-	private Double porcentagem;
+	private Double porcentagem = 0.0;
+	private Date dataPrevisaoTermino;
 	private Date dataCadastro;
 	private Date dataFechamento;
 	private Date dataPagamento;
@@ -58,10 +63,29 @@ public class ServicoEmpresa implements Serializable{
 	private Empreendimento empreendimento;
 
 	@ManyToOne
-	@JoinColumn(name = "id_usuario")
-	private Usuario usuarioCadastro;
+	@JoinColumn(name = "id_estrutura")
+	private Estrutura estrutura;
 
 	@OneToMany(mappedBy = "servicoEmpresa", cascade = CascadeType.ALL)
-	private List<OcorrenciaServico> ocorrencias;
-
+	private List<OcorrenciaServico> ocorrencias = new ArrayList<>();
+	
+	@Transient
+	private List<Estrutura> estruturas = new ArrayList<>();
+	
+	public List<Estrutura> getEstruturas(){
+		return addEstrutura(estrutura);
+	}
+	
+	public List<Estrutura> addEstrutura(Estrutura estrutura){			
+		estruturas.add(estrutura);
+		if(estrutura.getRaiz() != null) {
+			return addEstrutura(estrutura.getRaiz());
+		}
+		
+		return estruturas.stream().sorted((e1,e2)-> e1.getId().compareTo(e2.getId())).collect(Collectors.toList());
+	}
+	
+	public List<OcorrenciaServico> getOcorrencias(){
+		return ocorrencias.stream().sorted((e1,e2)-> e1.getId().compareTo(e2.getId())).collect(Collectors.toList());
+	}
 }
