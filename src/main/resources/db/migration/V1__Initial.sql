@@ -1011,15 +1011,16 @@ ALTER TABLE ONLY servicos.ocorrencia_servico
 
 ALTER TABLE ONLY servicos.servico_empresa
     ADD CONSTRAINT fkmsmek9vlivy4w6nj3ixdr48rb FOREIGN KEY (id_pacote_servico) REFERENCES servicos.pacote_servico(id);
+
 ALTER TABLE ONLY servicos.servico_empresa
     ADD CONSTRAINT fkpeht7lb55gedscrt50dkudill FOREIGN KEY (id_prestadora_servico) REFERENCES servicos.prestadora_servico(id);
 
 ALTER TABLE ONLY servicos.prestadora_servico
     ADD CONSTRAINT fksj2d5rr37jxw51tg210o2gsv1 FOREIGN KEY (id_dado_empresa) REFERENCES communs.dado_empresa(id);
    
-   
-   
 INSERT INTO communs.usuario(id,ativo, data_cadastro, email, login, nome, senha, id_empreendimento)
 	VALUES (1,true,'2017-12-23','root@suporte.com.br','root','Usuario root', 
 			'$2a$10$HfixpsFVsIyNFzUIhTh5puP/siW/v/9H2ZUFgqlAiv8MX8JUEBEo.', null);   
+   
+ALTER TABLE communs.usuario ADD COLUMN foto_base_64 character varying(255);
    
