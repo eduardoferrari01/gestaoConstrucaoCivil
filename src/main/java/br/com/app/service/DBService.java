@@ -40,7 +40,7 @@ public class DBService {
 		endereco.setComplemento("Cidade velha");
 		endereco.setLocalidade("Sumaré");
 		endereco.setLogradouro("Rua Antonio Anastasia");
-		endereco.setNumero("789456");
+		endereco.setNumero(789456);
 		endereco.setUf("SP");
 		
 			
