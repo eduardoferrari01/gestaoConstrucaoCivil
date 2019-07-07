@@ -29,6 +29,9 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import br.com.app.dto.UserRequestDTO;
+import br.com.app.dto.UserResponseDTO;
+import br.com.app.dto.UsuarioUtil;
 import br.com.app.entity.Usuario;
 import br.com.app.enuns.StatusUsuarioEnum;
 import br.com.app.pojo.MensagemException;
@@ -48,42 +51,46 @@ public class UsuarioRestController {
 	@ResponseStatus(HttpStatus.OK)
 	@GetMapping(value = "/usuario")
 	@ResponseBody
-	public Usuario user(Principal user, HttpSession session) {
-
-		return (Usuario) session.getAttribute("usuario");
+	public UserResponseDTO user(Principal user, HttpSession session) {
+		
+		Usuario usuario = (Usuario) session.getAttribute("usuario");
+		
+		return UsuarioUtil.convertToUserResponseDTO(usuario);
 	}
 
 	@ResponseStatus(HttpStatus.OK)
 	@GetMapping(value = "/descricao")
-	public Page<Usuario> findByDescricao(@RequestParam(value = "page", defaultValue = "0") Integer page,
+	public Page<UserResponseDTO> findByDescricao(@RequestParam(value = "page", defaultValue = "0") Integer page,
 			@RequestParam(value = "linesPerPage", defaultValue = "24") Integer linesPerPage,
 			@RequestParam(value = "orderBy", defaultValue = "nome") String orderBy,
 			@RequestParam(value = "direction", defaultValue = "ASC") String direction,
 			@RequestParam(value = "descricao", required = false, defaultValue = "") String descricao) {
 
-		Page<Usuario> list = null;
+		Page<Usuario> usuarios = null;
 
 		if (descricao.isEmpty() || descricao.equalsIgnoreCase("")) {
-			list = usuarioService.findAll(PageRequest.of(page, linesPerPage, Direction.valueOf(direction), orderBy));
+			usuarios = usuarioService.findAll(PageRequest.of(page, linesPerPage, Direction.valueOf(direction), orderBy));
 		} else {
-			list = usuarioService.findByDescricaoIgnoreCase(descricao,
+			usuarios = usuarioService.findByDescricaoIgnoreCase(descricao,
 					PageRequest.of(page, linesPerPage, Direction.valueOf(direction), orderBy));
 		}
-		return list;
+		return UsuarioUtil.convertToUserResponseDTO(usuarios);
 	}
 
 	@ResponseStatus(HttpStatus.CREATED)
 	@PostMapping
-	public Usuario insert(@Validated @RequestBody Usuario usuario) {
+	public UserResponseDTO insert(@Validated @RequestBody UserRequestDTO userRequestDTO) {
 
-		return usuarioService.insert(usuario);
-
+		Usuario usuario = UsuarioUtil.convertToUsuario(userRequestDTO);
+		return UsuarioUtil.convertToUserResponseDTO(usuarioService.insert(usuario));
 	}
 
 	@ResponseStatus(HttpStatus.CREATED)
 	@PutMapping
-	public Usuario update(@RequestBody Usuario usuario) {
-		return usuarioService.update(usuario);
+	public UserResponseDTO update(@RequestBody UserRequestDTO userRequestDTO) {
+		
+		Usuario usuario = UsuarioUtil.convertToUsuario(userRequestDTO);
+		return UsuarioUtil.convertToUserResponseDTO(usuarioService.update(usuario));
 	}
 
 	@ResponseStatus(HttpStatus.CREATED)
@@ -101,8 +108,9 @@ public class UsuarioRestController {
 
 	@ResponseStatus(HttpStatus.OK)
 	@GetMapping(value = "/{id}")
-	public Usuario buscarPorId(@PathVariable Long id) {
-		return usuarioService.findById(id);
+	public UserResponseDTO buscarPorId(@PathVariable Long id) {
+		
+		return UsuarioUtil.convertToUserResponseDTO(usuarioService.findById(id));
 	}
 
 	@ResponseStatus(HttpStatus.OK)
