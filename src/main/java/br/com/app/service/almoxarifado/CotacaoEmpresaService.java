@@ -44,7 +44,7 @@ public class CotacaoEmpresaService {
 		return cotacaoEmpresaRepository.findAll();
 	}
 
-	public CotacaoEmpresa buscarPorId(Long id) {
+	public CotacaoEmpresa findById(Long id) {
 		return cotacaoEmpresaRepository.findById(id).get();
 	}
 
