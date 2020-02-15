@@ -18,37 +18,32 @@ public class BaixaEstoqueService {
 
 	@Autowired
 	private EstoqueEmpreendimentoRepository estoqueRepository;
-	
-	
+
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Transactional(readOnly = false)
 	public void baixar(EntradaOuBaixa baixa) {
 		Collection<IItem> t = baixa.getItens();
-		
-		for(IItem item : t)
-		{
-			EstoqueEmpreendimento estoque = estoqueRepository.estoque(baixa.empreendimentoSaida().getId(),item.getProduto().getId());
-			if(estoque != null)
-			{
-			 estoque.setQuantidade(estoque.getQuantidade() - item.getQuantidade());
-		    
-			if(estoque.isNegativo())
-		    {
-			   estoqueRepository.save(estoque);
-			   
-		    }else
-		    {
-		    	throw new EstoqueEmpreendimentoException("Estoque negativo");
-		    }
-			
-			}else
-			{
+
+		for (IItem item : t) {
+			EstoqueEmpreendimento estoque = estoqueRepository.estoque(baixa.empreendimentoSaida().getId(),
+					item.getProduto().getId());
+			if (estoque != null) {
+				estoque.setQuantidade(estoque.getQuantidade() - item.getQuantidade());
+
+				if (estoque.isNegativo()) {
+					estoqueRepository.save(estoque);
+
+				} else {
+					throw new EstoqueEmpreendimentoException("Estoque negativo");
+				}
+
+			} else {
 				throw new EstoqueEmpreendimentoException("Produto não encontrado no estoque do empreendimento");
-				
+
 			}
-				
+
 		}
-		
+
 	}
-	
+
 }
