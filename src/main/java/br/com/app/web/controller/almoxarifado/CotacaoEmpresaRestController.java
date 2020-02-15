@@ -61,7 +61,7 @@ public class CotacaoEmpresaRestController {
 	@ResponseStatus(HttpStatus.OK)
 	@GetMapping(value = "/{id}")
 	public CotacaoEmpresa buscarPorId(@PathVariable Long id) {
-		return cotacaoEmpresaService.buscarPorId(id);
+		return cotacaoEmpresaService.findById(id);
 	}
 	
 	@ResponseStatus(HttpStatus.OK)
@@ -105,7 +105,7 @@ public class CotacaoEmpresaRestController {
 		response.setHeader("Content-Disposition", "inline; filename=file.pdf");
 	    response.setContentType("application/pdf");
 	    
-	    CotacaoEmpresa cotacoes = cotacaoEmpresaService.buscarPorId(idCotacaoEmpresa);
+	    CotacaoEmpresa cotacoes = cotacaoEmpresaService.findById(idCotacaoEmpresa);
 	try {	
 		HashMap<String, Object> hashMap = new HashMap<>();
 		hashMap.put("SUB_REPORT_DIR", relatorioUtil.caminhoArquivoCotacaoEmpresaItens());
