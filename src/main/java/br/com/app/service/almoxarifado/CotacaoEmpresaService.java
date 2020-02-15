@@ -29,7 +29,7 @@ public class CotacaoEmpresaService {
 		}
 		cotacaoEmpresaRepository.save(cotacaoEmpresa);
 	}
-	
+
 	@Transactional(readOnly = false)
 	public void update(CotacaoEmpresa cotacaoEmpresa) {
 		for (CotacaoEmpresaItem item : cotacaoEmpresa.getItens()) {

@@ -1,6 +1,7 @@
 package br.com.app.service.almoxarifado;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -16,7 +17,7 @@ import com.querydsl.core.types.dsl.BooleanExpression;
 
 import br.com.app.entity.Usuario;
 import br.com.app.entity.almoxarifado.Cotacao;
-import br.com.app.entity.almoxarifado.QCotacao;
+//import br.com.app.entity.almoxarifado.QCotacao;
 import br.com.app.enuns.StatusCotacao;
 import br.com.app.exceptions.NotFoundException;
 import br.com.app.pojo.SessionUsuario;
@@ -83,41 +84,41 @@ public class CotacaoService {
 	}
 	
 	public List<BooleanExpression> filtros(CotacaoFilter filter){
-		QCotacao qCotacao = QCotacao.cotacao;
-		
-		Usuario user = SessionUsuario.getInstance().getUsuario();
-		
-		List<BooleanExpression> geral = new ArrayList<>();
-		
-		BooleanExpression empreendimentoEquals = qCotacao.empreendimento.eq(user.getEmpreendimento());
-		geral.add(empreendimentoEquals);
-		
-		if(filter.getDataCadastroDe() != null && filter.getDataCadastroAte() != null) {
-			BooleanExpression dataCriacaoEquals = qCotacao.dataCriacao.between(filter.getDataCadastroDe(), filter.getDataCadastroAte());
-			geral.add(dataCriacaoEquals);
-		}
-		if(filter.getDataFechamentoDe() != null && filter.getDataFechamentoAte() != null) {
-			BooleanExpression dataFechamentoEquals = qCotacao.dataFechamento.between(filter.getDataFechamentoDe(), filter.getDataFechamentoAte());
-			geral.add(dataFechamentoEquals);
-		}
-		if(filter.getDataLimiteDe() != null && filter.getDataLimiteAte() != null) {
-			BooleanExpression dataLimiteEquals = qCotacao.dataLimite.between(filter.getDataLimiteDe(), filter.getDataLimiteAte());
-			geral.add(dataLimiteEquals);
-		}
-		if(filter.getDescricaoItem() != null) {		
-				BooleanExpression cotacaoEquals = qCotacao.itens.any().descricao.containsIgnoreCase(filter.getDescricaoItem());
-				geral.add(cotacaoEquals);	
-		}
-		if(filter.getStatus() != null) {
-			BooleanExpression statusEquals = qCotacao.statusCotacao.eq(filter.getStatus());
-			geral.add(statusEquals);
-		}
-		if(filter.getTema() != null) {
-			BooleanExpression temaEquals = qCotacao.tema.containsIgnoreCase(filter.getTema());
-			geral.add(temaEquals);
-		}	
-		
-		return geral;
+//		QCotacao qCotacao = QCotacao.cotacao;
+//		
+//		Usuario user = SessionUsuario.getInstance().getUsuario();
+//		
+//		List<BooleanExpression> geral = new ArrayList<>();
+//		
+//		BooleanExpression empreendimentoEquals = qCotacao.empreendimento.eq(user.getEmpreendimento());
+//		geral.add(empreendimentoEquals);
+//		
+//		if(filter.getDataCadastroDe() != null && filter.getDataCadastroAte() != null) {
+//			BooleanExpression dataCriacaoEquals = qCotacao.dataCriacao.between(filter.getDataCadastroDe(), filter.getDataCadastroAte());
+//			geral.add(dataCriacaoEquals);
+//		}
+//		if(filter.getDataFechamentoDe() != null && filter.getDataFechamentoAte() != null) {
+//			BooleanExpression dataFechamentoEquals = qCotacao.dataFechamento.between(filter.getDataFechamentoDe(), filter.getDataFechamentoAte());
+//			geral.add(dataFechamentoEquals);
+//		}
+//		if(filter.getDataLimiteDe() != null && filter.getDataLimiteAte() != null) {
+//			BooleanExpression dataLimiteEquals = qCotacao.dataLimite.between(filter.getDataLimiteDe(), filter.getDataLimiteAte());
+//			geral.add(dataLimiteEquals);
+//		}
+//		if(filter.getDescricaoItem() != null) {		
+//				BooleanExpression cotacaoEquals = qCotacao.itens.any().descricao.containsIgnoreCase(filter.getDescricaoItem());
+//				geral.add(cotacaoEquals);	
+//		}
+//		if(filter.getStatus() != null) {
+//			BooleanExpression statusEquals = qCotacao.statusCotacao.eq(filter.getStatus());
+//			geral.add(statusEquals);
+//		}
+//		if(filter.getTema() != null) {
+//			BooleanExpression temaEquals = qCotacao.tema.containsIgnoreCase(filter.getTema());
+//			geral.add(temaEquals);
+//		}	
+//		
+		return Collections.emptyList();
 	}
 
 }
