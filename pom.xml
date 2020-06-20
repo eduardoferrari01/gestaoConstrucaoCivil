@@ -7,8 +7,8 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>2.1.5.RELEASE</version>
-		<relativePath /> <!-- lookup parent from repository -->
+		<version>2.3.1.RELEASE</version>
+		<relativePath />
 	</parent>
 
 	<groupId>br.com.app</groupId>
@@ -17,12 +17,12 @@
 	<packaging>jar</packaging>
 
 	<name>gestao-construcao-civil</name>
-	<description>Gestao Construcao Civil</description>
+	<description>Gestão Construção Civil</description>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-		<java.version>10</java.version>
+		<java.version>13</java.version>
 	</properties>
 
 	<dependencies>
@@ -35,6 +35,12 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
 		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-validation</artifactId>
+		</dependency>
+
 		<dependency>
 			<groupId>net.sf.ehcache</groupId>
 			<artifactId>ehcache</artifactId>
@@ -68,9 +74,7 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
-		<!-- <dependency> <groupId>org.flywaydb</groupId> <artifactId>flyway-core</artifactId> 
-			</dependency> -->
-
+		
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
@@ -96,9 +100,9 @@
 		<dependency>
 			<groupId>net.sf.jasperreports</groupId>
 			<artifactId>jasperreports</artifactId>
-      <version>6.11.0</version>
- </dependency>
-		<!-- https://mvnrepository.com/artifact/net.sf.jasperreports/jasperreports-fonts -->
+			<version>6.11.0</version>
+		</dependency>
+		
 		<dependency>
 			<groupId>net.sf.jasperreports</groupId>
 			<artifactId>jasperreports-fonts</artifactId>
@@ -111,9 +115,7 @@
 			<version>2.3.0</version>
 		</dependency>
 
-
 	</dependencies>
-
 
 	<build>
 		<plugins>
@@ -146,7 +148,5 @@
 			</plugin>
 		</plugins>
 	</build>
-
-
 
 </project>
