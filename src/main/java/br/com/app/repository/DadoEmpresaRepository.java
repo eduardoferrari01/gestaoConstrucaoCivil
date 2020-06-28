@@ -20,6 +20,4 @@ public interface DadoEmpresaRepository extends JpaRepository<DadoEmpresa,Long>{
 
 	Page<DadoEmpresa> findByCnpjContaining(String descricao, Pageable page);
 
-	Page<DadoEmpresa> findByRazaoSocialIgnoreCaseContainingOrNomeFantasiaIgnoreCaseContaining(
-			String descricao, Pageable page);
 }

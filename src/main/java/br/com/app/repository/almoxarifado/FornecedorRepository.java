@@ -13,10 +13,7 @@ public interface FornecedorRepository extends JpaRepository<Fornecedor,Long>{
 	Optional<Fornecedor> findByDadoEmpresaCnpj(String cnpj);
 
 	Page<Fornecedor> findByDadoEmpresaCnpjContaining(String descricao, Pageable page);
-
-	Page<Fornecedor> findByDadoEmpresaRazaoSocialIgnoreCaseContainingOrDadoEmpresaNomeFantasiaIgnoreCaseContaining(
-			String descricao, Pageable page);
-
+	
 	boolean existsByDadoEmpresaCnpj(String cnpj);
 
 }

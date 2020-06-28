@@ -57,11 +57,11 @@ public class DadoEmpresaService {
 	public Page<DadoEmpresa> findByDescricaoIgnoreCase(String descricao, Pageable page) {
 		Page<DadoEmpresa> list = null;
 		descricao = descricao.replaceAll("[./-]","");
+		
 		if (descricao.matches("[0-9]+")) {
 			list = dadoEmpresaRepository.findByCnpjContaining(descricao, page);
-		}else {
-			list = dadoEmpresaRepository.findByRazaoSocialIgnoreCaseContainingOrNomeFantasiaIgnoreCaseContaining(descricao, page);
 		}
+		
 		if(list == null || list.getNumberOfElements() < 1) {
 			throw new MensagemException("Não foi encontrado nenhuma resultado para a busca" + descricao);
 		}

@@ -64,8 +64,6 @@ public class FornecedorService {
 		descricao = descricao.replaceAll("[./-]","");
 		if (descricao.matches("[0-9]+")) {
 			list = fornecedorRepository.findByDadoEmpresaCnpjContaining(descricao, page);
-		}else {
-			list = fornecedorRepository.findByDadoEmpresaRazaoSocialIgnoreCaseContainingOrDadoEmpresaNomeFantasiaIgnoreCaseContaining(descricao, page);
 		}
 		if(list == null || list.getNumberOfElements() < 1) {
 			throw new MensagemException("Não foi encontrado nenhuma resultado para a busca" + descricao);
